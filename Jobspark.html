@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JobSpark AI - Resume Builder</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #1f1f1f;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 20px;
+      background: #1e88e5;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .preview {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>JobSpark AI - Resume Builder</h1>
+
+  <div class="form-group">
+    <label for="name">Full Name</label>
+    <input id="name" type="text" placeholder="e.g. Bava Sai Nagarjuna"/>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="e.g. bava@example.com"/>
+  </div>
+
+  <div class="form-group">
+    <label for="skills">Skills</label>
+    <textarea id="skills" rows="3" placeholder="e.g. Python, HTML, AI, Problem Solving"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="experience">Experience / Projects</label>
+    <textarea id="experience" rows="4" placeholder="e.g. Built AIResumeX, a resume generator..."></textarea>
+  </div>
+
+  <button onclick="generateResume()">Generate Resume</button>
+
+  <div class="preview" id="resumePreview" style="display:none;">
+    <h2>Resume Preview</h2>
+    <p><strong>Name:</strong> <span id="pName"></span></p>
+    <p><strong>Email:</strong> <span id="pEmail"></span></p>
+    <p><strong>Skills:</strong> <span id="pSkills"></span></p>
+    <p><strong>Experience:</strong> <span id="pExp"></span></p>
+  </div>
+
+  <script>
+    function generateResume() {
+      document.getElementById('pName').innerText = document.getElementById('name').value;
+      document.getElementById('pEmail').innerText = document.getElementById('email').value;
+      document.getElementById('pSkills').innerText = document.getElementById('skills').value;
+      document.getElementById('pExp').innerText = document.getElementById('experience').value;
+      document.getElementById('resumePreview').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<button onclick="downloadPDF()">Download as PDF</button>
+function downloadPDF() {
+  const element = document.getElementById('resumePreview');
+  html2pdf().from(element).save('My_Resume.pdf');
+}
+<button onclick="suggestExperience()">Auto-Generate Experience</button>
+function suggestExperience() {
+  const skills = document.getElementById('skills').value.toLowerCase();
+
+  let suggestion = "Built innovative projects applying AI principles.";
+  if (skills.includes('python'))
+    suggestion = "Developed Python scripts for data analysis and automation.";
+  if (skills.includes('html') || skills.includes('web'))
+    suggestion = "Created responsive web pages using HTML, CSS, and JavaScript.";
+  if (skills.includes('ai'))
+    suggestion = "Built AI tools like resume generators using LLMs and logic.";
+  if (skills.includes('java'))
+    suggestion = "Developed Java-based applications for problem-solving tasks.";
+
+  document.getElementById('experience').value = suggestion;
+}
